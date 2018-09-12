@@ -2,7 +2,7 @@ from django.db import models
 
 
 class ObjectInfo(models.Model):
-    _id = models.CharField(
+    id_openData = models.CharField(
         max_length=200,
         verbose_name='ID opendata.mkrf.ru')
     nativeName = models.CharField(

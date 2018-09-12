@@ -1,6 +1,96 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    hello world
+<div class="container">
+    <br>
+    <div class="row" style="overflow: scroll">
+        <div class="col-12">
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">ID opendata.mkrf.ru</th>
+                  <th scope="col">Наименование</th>
+                  <th scope="col">Полный адрес</th>
+                  <th scope="col">Муниципальное образование</th>
+                  <th scope="col">Населенный пункт</th>
+                  <th scope="col">Наличие уcтановленной информационной надписи установленного образца</th>
+                  <th scope="col">Фотография информационной надписи</th>
+                  <th scope="col">Наличие информационной надписи, но не соответствующей требованиям</th>
+                  <th scope="col">Фото</th>
+                  <th scope="col">URL адрес</th>
+                  <th scope="col">Описание</th>
+                  <th scope="col">Принадлежность к ЮНЭСКО</th>
+                  <th scope="col">Особо ценный объект</th>
+                  <th scope="col">Реквизиты и наименование акта органа государственной власти о постановке на государственную охрану объекта культурного наследия</th>
+                  <th scope="col">Собственник</th>
+                  <th scope="col">Под чьим управлением</th>
+                  <th scope="col">Контактные данные собственника ОКН</th>
+                  <th scope="col">Наличие охранного обязательства ОКН</th>
+                  <th scope="col">Наличие паспорта ОКН</th>
+                  <th scope="col">Актуальный адрес</th>
+                  <th scope="col">Общая видовая принадлежность</th>
+                  <th scope="col">Наличие документов о границах территории ОКН</th>
+                  <th scope="col">Реквизиты об утверждении границ территории:</th>
+                  <th scope="col">Наличие документов об утвержденых зонах охраны</th>
+                  <th scope="col">Документ об утвержденых зонах охраны</th>
+                  <th scope="col">Наличие зарегистрированных прав/обременений</th>
+                  <th scope="col">Дата</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for d in data%}
+                <tr>
+                  <th scope="row">{{ d.id_openData }}</th>
+                  <td>{{ d.nativeName }}</td>
+                  <td>{{ d.fullAddress }}</td>
+                  <td>{{ d.municipality }}</td>
+                  <td>{{ d.locality }}</td>
+                  <td>{{ d.OKN_in_ensemble }}</td>
+                  <td>{{ d.YES }}</td>
+                  <td>{{ d.NO }}</td>
+                  <td>{{ d.IN_WORK }}</td>
+                  <td>{{ d.information_CHOICES }}</td>
+                  <td>{{ d.information_sign }}</td>
+                  <td>{{ d.information_sign_photo }}</td>
+                  <td>{{ d.information_sign_conformity }}</td>
+                  <td>{{ d.photo }}</td>
+                  <td>{{ d.url }}</td>
+                  <td>{{ d.description }}</td>
+                  <td>{{ d.affiliation_U }}</td>
+                  <td>{{ d.esp_valuable_object }}</td>
+                  <td>{{ d.requisites_and_title }}</td>
+                  <td>{{ d.owner }}</td>
+                  <td>{{ d.management }}</td>
+                  <td>{{ d.owner_contacts }}</td>
+                  <td>{{ d.has_security_obligation }}</td>
+                  <td>{{ d.has_passport_OKN }}</td>
+                  <td>{{ d.actual_address }}</td>
+                  <td>{{ d.gen_species_appearance }}</td>
+                  <td>{{ d.has_docs_boundaries }}</td>
+                  <td>{{ d.has_docs_of_aprroval }}</td>
+                  <td>{{ d.document_on_approved_security }}</td>
+                  <td>{{ d.has_rights }}</td>
+                  <td>{{ d.date }}</td>
+                    <td><a href="#" class="btn btn-primary">edit</a></td>
+
+                </tr>
+              {% endfor %}
+                <!--<tr>-->
+                  <!--<th scope="row">2</th>-->
+                  <!--<td>Jacob</td>-->
+                  <!--<td>Thornton</td>-->
+                  <!--<td>@fat</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                  <!--<th scope="row">3</th>-->
+                  <!--<td>Larry</td>-->
+                  <!--<td>the Bird</td>-->
+                  <!--<td>@twitter</td>-->
+                <!--</tr>-->
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>
     <a href="{% url 'logout' %}">logout</a>
 {% endblock %}
