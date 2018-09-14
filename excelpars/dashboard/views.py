@@ -8,7 +8,6 @@ from .models import ObjectInfo, Municipality, Locality, Species
 from .forms import ObjectInfoForm
 from django.core import serializers
 
-
 import json
 
 
@@ -115,13 +114,13 @@ def edit_data(request):
     date = request.POST.get('date')
 
 
-    OKN_in_ensemble =  True if 'on' in request.POST.get('OKN_in_ensemble') else  False
-    affiliation_U = True if 'on' in request.POST.get('affiliation_U') else False
-    esp_valuable_object = True if 'on' in request.POST.get('esp_valuable_object') else False
-    has_docs_boundaries = True if 'on' in request.POST.get('has_docs_boundaries') else False
-    has_docs_of_aprroval = True if 'on' in request.POST.get('has_docs_of_aprroval') else False
-    has_rights =True if 'on' in request.POST.get('has_rights') else False
-    information_sign_conformity = True if 'on' in request.POST.get('information_sign_conformity') == "true" else False
+    OKN_in_ensemble =  True if 'OKN_in_ensemble' in request.POST else  False
+    affiliation_U = True if 'affiliation_U' in request.POST else False
+    esp_valuable_object = True if 'esp_valuable_object' in request.POST else False
+    has_docs_boundaries = True if 'has_docs_boundaries' in request.POST else False
+    has_docs_of_aprroval = True if 'has_docs_of_aprroval' in request.POST else False
+    has_rights = True if 'has_rights' in request.POST else False
+    information_sign_conformity = True if 'information_sign_conformity' in request.POST else False
 
     print(affiliation_U)
     print(esp_valuable_object)
