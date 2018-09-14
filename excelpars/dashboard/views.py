@@ -52,7 +52,7 @@ def get_id_data(request):
     data = serializers.serialize("json", [row, ])
     struct = json.loads(data)
     data = json.dumps(struct[0])
-    print(data)
+    # print(data)
 
     """data = {
         'id_openData': str(row.id_openData),
@@ -89,7 +89,7 @@ def get_id_data(request):
 
 
 def edit_data(request):
-    # print(request.POST)
+    print(request.POST)
     id_row_data = request.POST.get('id_row_data')
     id_openData = request.POST.get('id_openData')
     nativeName = request.POST.get('nativeName')
@@ -114,15 +114,21 @@ def edit_data(request):
     document_on_approved_security = request.POST.get('document_on_approved_security')
     date = request.POST.get('date')
 
-    OKN_in_ensemble = request.POST.get('OKN_in_ensemble') == "true"
-    affiliation_U = request.POST.get('affiliation_U') == "true"
-    esp_valuable_object = request.POST.get('esp_valuable_object') == "true"
-    has_docs_boundaries = request.POST.get('has_docs_boundaries') == "true"
-    has_docs_of_aprroval = request.POST.get('has_docs_of_aprroval') == "true"
-    has_rights = request.POST.get('has_rights') == "true"
-    has_rights = request.POST.get('has_rights') == "true"
-    information_sign_conformity = request.POST.get('information_sign_conformity') == "true"
+
+    OKN_in_ensemble =  True if 'on' in request.POST.get('OKN_in_ensemble') else  False
+    affiliation_U = True if 'on' in request.POST.get('affiliation_U') else False
+    esp_valuable_object = True if 'on' in request.POST.get('esp_valuable_object') else False
+    has_docs_boundaries = True if 'on' in request.POST.get('has_docs_boundaries') else False
+    has_docs_of_aprroval = True if 'on' in request.POST.get('has_docs_of_aprroval') else False
+    has_rights =True if 'on' in request.POST.get('has_rights') else False
+    information_sign_conformity = True if 'on' in request.POST.get('information_sign_conformity') == "true" else False
+
     print(affiliation_U)
+    print(esp_valuable_object)
+    print(has_docs_boundaries)
+    print(has_docs_of_aprroval)
+    print(information_sign_conformity)
+    print(OKN_in_ensemble)
 
     if request.POST:
         data_row = ObjectInfo.objects.get(id=id_row_data)
@@ -144,7 +150,7 @@ def edit_data(request):
 
         data_row.affiliation_U = affiliation_U
 
-        data_row.esp_valuable_object = True
+        data_row.esp_valuable_object = esp_valuable_object
 
         data_row.requisites_and_title = requisites_and_title
         data_row.owner = owner
@@ -155,13 +161,9 @@ def edit_data(request):
         data_row.gen_species_appearance = Species.objects.get(id=gen_species_appearance)
 
         data_row.has_docs_boundaries = has_docs_boundaries
-
         data_row.req_of_approval = req_of_approval
-
         data_row.has_docs_of_aprroval = has_docs_of_aprroval
-
         data_row.document_on_approved_security = document_on_approved_security
-
         data_row.has_rights = has_rights
 
         # data_row.date = date'''
