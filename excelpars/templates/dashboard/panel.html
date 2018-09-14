@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 
+{% block title %}Panel{% endblock %}
+
 {% block content %}
 <div class="container">
     <br>
     <div class="row" style="overflow: scroll">
         <div class="col-12">
-            <table class="table">
+            <table class="table" style="font-size:12px">
               <thead class="thead-dark">
                 <tr>
                   <th scope="col">ID opendata.mkrf.ru</th>
@@ -13,6 +15,7 @@
                   <th scope="col">Полный адрес</th>
                   <th scope="col">Муниципальное образование</th>
                   <th scope="col">Населенный пункт</th>
+                  <th scope="col">ОКН входит в ансамбль (да/нет)</th>
                   <th scope="col">Наличие уcтановленной информационной надписи установленного образца</th>
                   <th scope="col">Фотография информационной надписи</th>
                   <th scope="col">Наличие информационной надписи, но не соответствующей требованиям</th>
@@ -35,6 +38,7 @@
                   <th scope="col">Документ об утвержденых зонах охраны</th>
                   <th scope="col">Наличие зарегистрированных прав/обременений</th>
                   <th scope="col">Дата</th>
+                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
@@ -46,9 +50,6 @@
                   <td>{{ d.municipality }}</td>
                   <td>{{ d.locality }}</td>
                   <td>{{ d.OKN_in_ensemble }}</td>
-                  <td>{{ d.YES }}</td>
-                  <td>{{ d.NO }}</td>
-                  <td>{{ d.IN_WORK }}</td>
                   <td>{{ d.information_CHOICES }}</td>
                   <td>{{ d.information_sign }}</td>
                   <td>{{ d.information_sign_photo }}</td>
@@ -67,12 +68,11 @@
                   <td>{{ d.actual_address }}</td>
                   <td>{{ d.gen_species_appearance }}</td>
                   <td>{{ d.has_docs_boundaries }}</td>
+                  <td>{{ d.req_of_approval }}</td>
                   <td>{{ d.has_docs_of_aprroval }}</td>
                   <td>{{ d.document_on_approved_security }}</td>
-                  <td>{{ d.has_rights }}</td>
                   <td>{{ d.date }}</td>
-                    <td><a href="#" class="btn btn-primary">edit</a></td>
-
+                    <td><button type="button" id='id_data' class="btn btn-primary" data-id="{{ d.id }}" data-toggle="modal" data-target="#exampleModal">edit</button></td>
                 </tr>
               {% endfor %}
                 <!--<tr>-->
@@ -92,5 +92,42 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{% url 'edit_data' %}" method="post">
+        <div class="modal-body">
+            {% csrf_token%}
+            <input type="hidden" name="id_row_data" id="id_row_data" value="">
+            {{ form.as_p }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Edit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
     <a href="{% url 'logout' %}">logout</a>
+{% endblock %}
+
+{% block jquery %}
+<script>
+  $('#myModal').on('shown.bs.modal', function () {
+    $('#myInput').trigger('focus')
+  })
+
+
+</script>
+{% include "dashboard/jq_code_update_form.html" %}
+
 {% endblock %}
