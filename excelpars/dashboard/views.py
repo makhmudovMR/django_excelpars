@@ -2,11 +2,13 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.http import JsonResponse
+from django.db.models import Q
 from .forms import LoginForm
 from .models import ObjectInfo, Municipality, Locality, Species
 from .forms import ObjectInfoForm
-from django.core import serializers
+
 
 import json
 
@@ -171,3 +173,104 @@ def edit_data(request):
         # print(data_row)
 
     return HttpResponseRedirect('http://127.0.0.1:8000/dashboard/panel/')
+
+
+def add_data(request):
+    print('in 1')
+    text = ''
+    if request.method == 'POST':
+        print('in 2')
+        form = ObjectInfoForm(request.POST)
+        if form.is_valid():
+            print('in 3')
+
+            id_openData = form.cleaned_data['id_openData']
+            nativeName = form.cleaned_data['nativeName']
+            fullAddress = form.cleaned_data['fullAddress']
+            municipality = form.cleaned_data['municipality']
+            # municipality = request.POST.get('municipality')
+            locality = form.cleaned_data['locality']
+            # locality = request.POST.get('municipality')
+            OKN_in_ensemble = form.cleaned_data['OKN_in_ensemble']
+            information_sign = form.cleaned_data['information_sign']
+            information_sign_photo = form.cleaned_data['information_sign_photo']
+            information_sign_conformity = form.cleaned_data['information_sign_conformity']
+            photo = form.cleaned_data['photo']
+            url = form.cleaned_data['url']
+            description = form.cleaned_data['description']
+            affiliation_U = form.cleaned_data['municipality']
+            esp_valuable_object = form.cleaned_data['esp_valuable_object']
+            requisites_and_title = form.cleaned_data['requisites_and_title']
+            owner = form.cleaned_data['owner']
+            management = form.cleaned_data['management']
+            owner_contacts = form.cleaned_data['owner_contacts']
+            has_security_obligation = form.cleaned_data['has_security_obligation']
+            has_passport_OKN = form.cleaned_data['has_passport_OKN']
+            actual_address = form.cleaned_data['actual_address']
+            gen_species_appearance = form.cleaned_data['gen_species_appearance']
+            has_docs_boundaries = form.cleaned_data['has_docs_boundaries']
+            req_of_approval = form.cleaned_data['req_of_approval']
+            has_docs_of_aprroval = form.cleaned_data['has_docs_of_aprroval']
+            document_on_approved_security = form.cleaned_data['document_on_approved_security']
+            has_rights = form.cleaned_data['has_rights']
+            date = form.cleaned_data['date']
+
+            print(type(municipality))
+            print(type(locality))
+            print(date)
+
+            ObjectInfo.objects.create(
+                id_openData=id_openData,
+                nativeName=nativeName,
+                fullAddress=fullAddress,
+                municipality=municipality,
+                # municipality=True,
+                locality=locality,
+                OKN_in_ensemble=OKN_in_ensemble,
+                information_sign=information_sign,
+                information_sign_photo=information_sign_photo,
+                information_sign_conformity=information_sign_conformity,
+                photo=photo,
+                url=url,
+                description=description,
+                affiliation_U=affiliation_U,
+                esp_valuable_object=esp_valuable_object,
+                requisites_and_title=requisites_and_title,
+                owner=owner,
+                management=management,
+                owner_contacts=owner_contacts,
+                has_security_obligation=has_security_obligation,
+                has_passport_OKN=has_passport_OKN,
+                actual_address=actual_address,
+                gen_species_appearance=gen_species_appearance,
+                has_docs_boundaries=has_docs_boundaries,
+                req_of_approval=req_of_approval,
+                has_docs_of_aprroval=has_docs_of_aprroval,
+                document_on_approved_security=document_on_approved_security,
+                has_rights=has_rights,
+                date=date,
+            ).save()
+
+            text = '''
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong></strong>Data was added.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            '''
+            print(form.cleaned_data)
+    else:
+        form = ObjectInfoForm()
+    return render(request, 'dashboard/add_form.html', {"form": form, "text": text})
+
+
+def search(request):
+    query = request.GET.get('q')
+    founded_articles = ObjectInfo.objects.filter(Q(id_openData__icontains=query) | Q(nativeName__icontains=query) | Q(fullAddress__icontains=query))
+    form = ObjectInfoForm()
+    context = {
+        "data": founded_articles,
+        "form": form
+    }
+    return render(request, "dashboard/panel.html", context)

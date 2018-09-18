@@ -50,7 +50,6 @@
                   <td>{{ d.municipality }}</td>
                   <td>{{ d.locality }}</td>
                   <td>{{ d.OKN_in_ensemble }}</td>
-                  <td>{{ d.information_CHOICES }}</td>
                   <td>{{ d.information_sign }}</td>
                   <td>{{ d.information_sign_photo }}</td>
                   <td>{{ d.information_sign_conformity }}</td>
@@ -71,6 +70,7 @@
                   <td>{{ d.req_of_approval }}</td>
                   <td>{{ d.has_docs_of_aprroval }}</td>
                   <td>{{ d.document_on_approved_security }}</td>
+                  <td>{{ d.has_rights}}</td>
                   <td>{{ d.date }}</td>
                     <td><button type="button" id='id_data' class="btn btn-primary" data-id="{{ d.id }}" data-toggle="modal" data-target="#exampleModal">edit</button></td>
                 </tr>
@@ -117,7 +117,6 @@
     </div>
   </div>
 </div>
-    <a href="{% url 'logout' %}">logout</a>
 {% endblock %}
 
 {% block jquery %}
