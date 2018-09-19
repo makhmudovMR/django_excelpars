@@ -78,7 +78,14 @@
         }
 
         $("#id_document_on_approved_security").val(data.fields.document_on_approved_security)
-        $("#id_has_rights").val(data.fields.has_rights)
+
+        if (data.fields.has_rights == false){
+          $("#id_has_rights").prop('checked', false);
+        } else {
+          $("#id_has_rights").prop('checked', true);
+        }
+
+
         $("#id_date").val(data.fields.date)
       }
     })
