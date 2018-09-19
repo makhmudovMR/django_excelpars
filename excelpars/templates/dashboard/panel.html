@@ -8,8 +8,11 @@
     <div class="row" style="overflow: scroll">
         <div class="col-12">
             <table class="table" style="font-size:12px">
+              <form name="delete_data" action="{% url 'delete_data' %}" method="post">
+                {% csrf_token %}
               <thead class="thead-dark">
                 <tr>
+                  <th><button type="submit" class="btn btn-danger">Delete</button></th>
                   <th scope="col">ID opendata.mkrf.ru</th>
                   <th scope="col">Наименование</th>
                   <th scope="col">Полный адрес</th>
@@ -44,6 +47,7 @@
               <tbody>
               {% for d in data%}
                 <tr>
+                  <th><input type="checkbox" name="for_delete" value="{{d.id}}"></th>
                   <th scope="row">{{ d.id_openData }}</th>
                   <td>{{ d.nativeName }}</td>
                   <td>{{ d.fullAddress }}</td>
@@ -88,6 +92,7 @@
                   <!--<td>@twitter</td>-->
                 <!--</tr>-->
               </tbody>
+              </form>
             </table>
         </div>
     </div>

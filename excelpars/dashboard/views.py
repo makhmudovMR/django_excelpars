@@ -279,3 +279,15 @@ def search(request):
         "form": form
     }
     return render(request, "dashboard/panel.html", context)
+
+
+def delete_data(request):
+    if request.method == 'POST':
+        print(request.POST)
+        data = request.POST.getlist('for_delete')
+        # print(data)
+        # print('this is data len:', len(data))
+        for id in data:
+            ObjectInfo.objects.filter(id=id).delete()
+
+    return HttpResponseRedirect(reverse('panel'))
