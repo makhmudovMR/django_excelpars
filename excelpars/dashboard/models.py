@@ -36,7 +36,7 @@ class ObjectInfo(models.Model):
     )
     information_sign = models.CharField(
         choices=information_CHOICES,
-        max_length=5,
+        max_length=20,
         verbose_name='Наличие уcтановленной информационной надписи установленного образца'
     )
     information_sign_photo = models.CharField(
@@ -79,12 +79,12 @@ class ObjectInfo(models.Model):
     )
     has_security_obligation = models.CharField(
         choices=information_CHOICES,
-        max_length=5,
+        max_length=20,
         verbose_name='Наличие охранного обязательства ОКН'
     )
     has_passport_OKN = models.CharField(
         choices=information_CHOICES,
-        max_length=5,
+        max_length=20,
         verbose_name='Наличие паспорта ОКН'
     )
     actual_address = models.TextField(

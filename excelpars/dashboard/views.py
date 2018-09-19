@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -14,6 +14,11 @@ import json
 
 
 def home(request):
+    if not request.user.is_authenticated():
+        return redirect(reverse('login'))
+    else:
+        return redirect(reverse('panel'))
+
     row = ObjectInfo.objects.get(id=1)
     data = print(row)
     return render(request, 'dashboard/home.html', {'text': data})
@@ -198,7 +203,7 @@ def add_data(request):
             photo = form.cleaned_data['photo']
             url = form.cleaned_data['url']
             description = form.cleaned_data['description']
-            affiliation_U = form.cleaned_data['municipality']
+            affiliation_U = form.cleaned_data['affiliation_U']
             esp_valuable_object = form.cleaned_data['esp_valuable_object']
             requisites_and_title = form.cleaned_data['requisites_and_title']
             owner = form.cleaned_data['owner']

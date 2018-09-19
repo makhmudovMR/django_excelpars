@@ -72,7 +72,7 @@
                   <td>{{ d.document_on_approved_security }}</td>
                   <td>{{ d.has_rights}}</td>
                   <td>{{ d.date }}</td>
-                    <td><button type="button" id='id_data' class="btn btn-primary" data-id="{{ d.id }}" data-toggle="modal" data-target="#exampleModal">edit</button></td>
+                    <td><button type="button" id='id_data' class="btn btn-primary id_data" data-id="{{ d.id }}" data-toggle="modal" data-target="#exampleModal">edit</button></td>
                 </tr>
               {% endfor %}
                 <!--<tr>-->
@@ -127,6 +127,7 @@
 
 
 </script>
+
 {% include "dashboard/jq_code_update_form.html" %}
 
 {% endblock %}
