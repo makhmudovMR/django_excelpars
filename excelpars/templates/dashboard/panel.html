@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}Panel{% endblock %}
 
 {% block content %}
@@ -55,9 +57,9 @@
                   <td>{{ d.locality }}</td>
                   <td>{{ d.OKN_in_ensemble }}</td>
                   <td>{{ d.information_sign }}</td>
-                  <td>{{ d.information_sign_photo }}</td>
+                  <td><img src="/media/{{ d.information_sign_photo }}" style="width:100px"></td>
                   <td>{{ d.information_sign_conformity }}</td>
-                  <td>{{ d.photo }}</td>
+                  <td><img src="/media/{{ d.photo }}" style="width:100px"></td>
                   <td>{{ d.url }}</td>
                   <td>{{ d.description }}</td>
                   <td>{{ d.affiliation_U }}</td>
@@ -95,6 +97,27 @@
               </form>
             </table>
         </div>
+        <div class="col-3"></div>
+          <div class="col-6">
+            <div class="pagination" style="text-align:center">
+                <span class="step-links">
+                    {% if data.has_previous %}
+                        <a href="?page=1" class="btn btn-info">&laquo; first</a>
+                        <a href="?page={{ data.previous_page_number }}" class="btn btn-info">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ data.number }} of {{ data.paginator.num_pages }}.
+                    </span>
+
+                    {% if data.has_next %}
+                        <a href="?page={{ data.next_page_number }}" class="btn btn-info">next</a>
+                        <a href="?page={{ data.paginator.num_pages }}" class="btn btn-info">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+          </div>
+          <div class="col-3"></div>
     </div>
 </div>
 
@@ -108,11 +131,11 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{% url 'edit_data' %}" method="post">
+      <form enctype="multipart/form-data"  action="{% url 'edit_data' %}" method="post">
         <div class="modal-body">
-            {% csrf_token%}
+            {% csrf_token %}
             <input type="hidden" name="id_row_data" id="id_row_data" value="">
-            {{ form.as_p }}
+            {{ form|crispy }}
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -135,4 +158,16 @@
 
 {% include "dashboard/jq_code_update_form.html" %}
 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $(function() {
+    $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1940:2100",
+      // You can put more options here.
+      dateFormat: 'yy-mm-dd',
+    });
+  });
+</script>
 {% endblock %}

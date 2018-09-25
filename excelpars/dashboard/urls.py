@@ -1,6 +1,8 @@
 from django.conf.urls import url
 from .views import home, login_view, panel, logout_view, get_id_data, edit_data, add_data, search, delete_data
 
+
+
 urlpatterns = [
     url('^$', home, name='home'),
     url('^login/$', login_view, name='login'),
@@ -11,4 +13,5 @@ urlpatterns = [
     url('^add_data/$', add_data, name='add_data'),
     url('^search/$', search, name='search'),
     url('^delete/$', delete_data, name="delete_data"),
+
 ]

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dashboard',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -124,6 +125,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/') # физическое хранилище
+MEDIA_URL = '/media/'
+
+
 LOGIN_URL = "http://127.0.0.1:8000/dashboard/login/"
 
 LOGIN_REDIRECT_URL = "http://127.0.0.1:8000/dashboard/login/"
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 <div class="container">
     <div class="row">
@@ -8,13 +10,27 @@
             <h3>Form</h3>
             {{text|safe}}
             <hr>
-            <form action="" method="post">
+            <form enctype="multipart/form-data" action="" method="post">
                 {% csrf_token %}
-                {{form.as_p}}
+                {{form|crispy}}
                 <button type="submit" class="btn btn-primary">Add</button>
             </form>
         </div>
         <div class="col"></div>
     </div>
 </div>
+{% endblock %}
+
+{% block jquery %}
+<script>
+  $(function() {
+    $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1940:2100",
+      // You can put more options here.
+      dateFormat: 'yy-mm-dd',
+    });
+  });
+</script>
 {% endblock %}

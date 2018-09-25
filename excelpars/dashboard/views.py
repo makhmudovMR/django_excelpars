@@ -1,13 +1,14 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.http import JsonResponse
 from django.db.models import Q
-from .forms import LoginForm
+from .forms import LoginForm, ObjectInfoForm
 from .models import ObjectInfo, Municipality, Locality, Species
 from .forms import ObjectInfoForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 import json
@@ -41,6 +42,18 @@ def login_view(request):
 @login_required
 def panel(request):
     data = ObjectInfo.objects.all()
+    print(list(data[:1]))
+    paginator = Paginator(data, 5)
+
+    page = request.GET.get('page')
+
+    try:
+        data = paginator.page(page)
+    except PageNotAnInteger:
+        data = paginator.page(1)
+    except EmptyPage:
+        data = paginator.page(paginator.num_pages)
+
     form = ObjectInfoForm()
     return render(request, 'dashboard/panel.html', {'data': data, 'form': form})
 
@@ -95,7 +108,19 @@ def get_id_data(request):
 
 
 def edit_data(request):
+    id = request.POST.get('id_row_data')
+    instance = get_object_or_404(ObjectInfo, id=id)
+    if request.POST:
+        form = ObjectInfoForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('panel'))
+
+'''
+def edit_data(request):
     print(request.POST)
+    
+    slug = request.POST.get('slug')
     id_row_data = request.POST.get('id_row_data')
     id_openData = request.POST.get('id_openData')
     nativeName = request.POST.get('nativeName')
@@ -107,7 +132,6 @@ def edit_data(request):
     photo = request.POST.get('photo')
     url = request.POST.get('url')
     description = request.POST.get('description')
-
     requisites_and_title = request.POST.get('requisites_and_title')
     owner = request.POST.get('owner')
     management = request.POST.get('management')
@@ -121,30 +145,22 @@ def edit_data(request):
     date = request.POST.get('date')
 
 
-    OKN_in_ensemble =  True if 'OKN_in_ensemble' in request.POST else  False
-    affiliation_U = True if 'affiliation_U' in request.POST else False
-    esp_valuable_object = True if 'esp_valuable_object' in request.POST else False
-    has_docs_boundaries = True if 'has_docs_boundaries' in request.POST else False
-    has_docs_of_aprroval = True if 'has_docs_of_aprroval' in request.POST else False
-    has_rights = True if 'has_rights' in request.POST else False
-    information_sign_conformity = True if 'information_sign_conformity' in request.POST else False
-
-    print(affiliation_U)
-    print(esp_valuable_object)
-    print(has_docs_boundaries)
-    print(has_docs_of_aprroval)
-    print(information_sign_conformity)
-    print(OKN_in_ensemble)
+    OKN_in_ensemble = request.POST.get("OKN_in_ensemble")
+    affiliation_U = request.POST.get("affiliation_U")
+    esp_valuable_object = request.POST.get("esp_valuable_object")
+    has_docs_boundaries = request.POST.get("has_docs_boundaries")
+    has_docs_of_aprroval = request.POST.get("has_docs_of_aprroval")
+    has_rights = request.POST.get("has_rights")
+    information_sign_conformity = request.POST.get("information_sign_conformity")
 
     if request.POST:
         data_row = ObjectInfo.objects.get(id=id_row_data)
 
+        data_row.slug = slug
         data_row.id_openData = id_openData
         data_row.nativeName = nativeName
         data_row.fullAddress = fullAddress
-
         data_row.municipality = Municipality.objects.get(id=int(municipality))
-
         data_row.locality = Locality.objects.get(id=locality)
         data_row.OKN_in_ensemble = OKN_in_ensemble
         data_row.information_sign = information_sign
@@ -153,11 +169,8 @@ def edit_data(request):
         data_row.photo = photo
         data_row.url = url
         data_row.description = description
-
         data_row.affiliation_U = affiliation_U
-
         data_row.esp_valuable_object = esp_valuable_object
-
         data_row.requisites_and_title = requisites_and_title
         data_row.owner = owner
         data_row.management = management
@@ -165,97 +178,29 @@ def edit_data(request):
         data_row.has_passport_OKN = has_passport_OKN
         data_row.actual_address = actual_address
         data_row.gen_species_appearance = Species.objects.get(id=gen_species_appearance)
-
         data_row.has_docs_boundaries = has_docs_boundaries
         data_row.req_of_approval = req_of_approval
         data_row.has_docs_of_aprroval = has_docs_of_aprroval
         data_row.document_on_approved_security = document_on_approved_security
         data_row.has_rights = has_rights
 
-        # data_row.date = date'''
+        data_row.date = date
         data_row.save()
         # print(id_openData)
         # print(data_row)
 
     return HttpResponseRedirect('http://127.0.0.1:8000/dashboard/panel/')
+'''
 
 
 def add_data(request):
     print('in 1')
     text = ''
-    if request.method == 'POST':
+    if request.POST:
         print('in 2')
-        form = ObjectInfoForm(request.POST)
+        form = ObjectInfoForm(request.POST, request.FILES)
         if form.is_valid():
-            print('in 3')
-
-            id_openData = form.cleaned_data['id_openData']
-            nativeName = form.cleaned_data['nativeName']
-            fullAddress = form.cleaned_data['fullAddress']
-            municipality = form.cleaned_data['municipality']
-            # municipality = request.POST.get('municipality')
-            locality = form.cleaned_data['locality']
-            # locality = request.POST.get('municipality')
-            OKN_in_ensemble = form.cleaned_data['OKN_in_ensemble']
-            information_sign = form.cleaned_data['information_sign']
-            information_sign_photo = form.cleaned_data['information_sign_photo']
-            information_sign_conformity = form.cleaned_data['information_sign_conformity']
-            photo = form.cleaned_data['photo']
-            url = form.cleaned_data['url']
-            description = form.cleaned_data['description']
-            affiliation_U = form.cleaned_data['affiliation_U']
-            esp_valuable_object = form.cleaned_data['esp_valuable_object']
-            requisites_and_title = form.cleaned_data['requisites_and_title']
-            owner = form.cleaned_data['owner']
-            management = form.cleaned_data['management']
-            owner_contacts = form.cleaned_data['owner_contacts']
-            has_security_obligation = form.cleaned_data['has_security_obligation']
-            has_passport_OKN = form.cleaned_data['has_passport_OKN']
-            actual_address = form.cleaned_data['actual_address']
-            gen_species_appearance = form.cleaned_data['gen_species_appearance']
-            has_docs_boundaries = form.cleaned_data['has_docs_boundaries']
-            req_of_approval = form.cleaned_data['req_of_approval']
-            has_docs_of_aprroval = form.cleaned_data['has_docs_of_aprroval']
-            document_on_approved_security = form.cleaned_data['document_on_approved_security']
-            has_rights = form.cleaned_data['has_rights']
-            date = form.cleaned_data['date']
-
-            print(type(municipality))
-            print(type(locality))
-            print(date)
-
-            ObjectInfo.objects.create(
-                id_openData=id_openData,
-                nativeName=nativeName,
-                fullAddress=fullAddress,
-                municipality=municipality,
-                # municipality=True,
-                locality=locality,
-                OKN_in_ensemble=OKN_in_ensemble,
-                information_sign=information_sign,
-                information_sign_photo=information_sign_photo,
-                information_sign_conformity=information_sign_conformity,
-                photo=photo,
-                url=url,
-                description=description,
-                affiliation_U=affiliation_U,
-                esp_valuable_object=esp_valuable_object,
-                requisites_and_title=requisites_and_title,
-                owner=owner,
-                management=management,
-                owner_contacts=owner_contacts,
-                has_security_obligation=has_security_obligation,
-                has_passport_OKN=has_passport_OKN,
-                actual_address=actual_address,
-                gen_species_appearance=gen_species_appearance,
-                has_docs_boundaries=has_docs_boundaries,
-                req_of_approval=req_of_approval,
-                has_docs_of_aprroval=has_docs_of_aprroval,
-                document_on_approved_security=document_on_approved_security,
-                has_rights=has_rights,
-                date=date,
-            ).save()
-
+            form.save()
             text = '''
             <div class="alert alert-success alert-dismissible fade show" role="alert">
               <strong></strong>Data was added.
@@ -272,7 +217,7 @@ def add_data(request):
 
 def search(request):
     query = request.GET.get('q')
-    founded_articles = ObjectInfo.objects.filter(Q(id_openData__icontains=query) | Q(nativeName__icontains=query) | Q(fullAddress__icontains=query))
+    founded_articles = ObjectInfo.objects.filter(Q(id_openData__icontains=query) | Q(nativeName__icontains=query))
     form = ObjectInfoForm()
     context = {
         "data": founded_articles,

@@ -16,43 +16,33 @@
         console.log(data)
         console.log(data.fields.nativeName)
         $("#id_row_data").val(data.pk)
+        $("#id_slug").val(data.fields.slug)
         $("#id_id_openData").val(data.fields.id_openData)
         $("#id_nativeName").val(data.fields.nativeName)
         $("#id_fullAddress").html(data.fields.fullAddress)
         $("#id_municipality").val(data.fields.municipality)
         $("#id_locality").val(data.fields.locality)
 
-        if (data.fields.OKN_in_ensemble == false){
-          $("#id_OKN_in_ensemble").prop('checked', false);
-        } else {
-          $("#id_OKN_in_ensemble").prop('checked', true);
-        }
 
+        $("#id_OKN_in_ensemble").val(data.fields.OKN_in_ensemble);
 
         $("#id_information_sign").val(data.fields.information_sign)
-        $("#id_information_sign_photo").val(data.fields.information_sign_photo)
 
-        if (data.fields.information_sign_conformity == false){
-          $("#id_information_sign_conformity").prop('checked', false);
-        } else {
-          $("#id_information_sign_conformity").prop('checked', true);
-        }
+        $("#id_information_sign_photo").attr('src', data.fields.information_sign_photo);
 
-        $("#id_photo").val(data.fields.photo)
+        $("#id_information_sign_conformity").val(data.fields.information_sign_conformity)
+
+
+        //$("#id_photo").val(data.fields.photo)
         $("#id_url").val(data.fields.url)
         $("#id_description").val(data.fields.description)
 
-        if (data.fields.affiliation_U == false){
-          $("#id_affiliation_U").prop('checked', false);
-        } else {
-          $("#id_affiliation_U").prop('checked', true);
-        }
 
-        if (data.fields.id_esp_valuable_object == false){
-          $("#id_esp_valuable_object").prop('checked', false);
-        }else{
-          $("#id_esp_valuable_object").prop('checked', true);
-        }
+          $("#id_affiliation_U").val(data.fields.affiliation_U);
+
+
+        $("#id_esp_valuable_object").val(data.fields.esp_valuable_object);
+
 
 
         $("#id_requisites_and_title").html(data.fields.requisites_and_title)
@@ -65,28 +55,22 @@
         $("#id_gen_species_appearance").val(data.fields.gen_species_appearance)
         $("#id_req_of_approval").html(data.fields.req_of_approval)
 
-        if (data.fields.has_docs_boundaries == false){
-          $("#id_has_docs_boundaries").prop('checked', false);
-        } else {
-          $("#id_has_docs_boundaries").prop('checked', true);
-        }
 
-        if (data.fields.has_docs_of_aprroval == false){
-          $("#id_has_docs_of_aprroval").prop('checked', false);
-        } else {
-          $("#id_has_docs_of_aprroval").prop('checked', true);
-        }
+        $("#id_has_docs_boundaries").val(data.fields.has_docs_boundaries);
 
-        $("#id_document_on_approved_security").val(data.fields.document_on_approved_security)
 
-        if (data.fields.has_rights == false){
-          $("#id_has_rights").prop('checked', false);
-        } else {
-          $("#id_has_rights").prop('checked', true);
-        }
+
+        $("#id_has_docs_of_aprroval").val(data.fields.has_docs_of_aprroval);
+
+
+        $("#id_document_on_approved_security").val(data.fields.document_on_approved_security);
+
+
+        $("#id_has_rights").val(data.fields.has_rights);
 
 
         $("#id_date").val(data.fields.date)
+        console.log("Hello world")
       }
     })
   })
